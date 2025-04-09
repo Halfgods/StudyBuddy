@@ -1,0 +1,74 @@
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it covers the screen */
+}
+
+.game-content {
+    display: none; /* Hidden initially */
+}
+/* Button styles */
+.btn {
+    background-color: transparent;
+    border: 2px solid #00ff99; /* Neon green border */
+    color: #00ff99; /* Neon green text */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background-color: #00ff99; /* Neon green background on hover */
+    color: #000; /* Dark text */
+    box-shadow: 0 0 15px #00ff99, 0 0 25px #00ff99; /* Glowing effect */
+}
+
+.btn:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: #00ff99;
+    transition: all 0.5s ease;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 0;
+}
+
+.btn:hover:before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Black background and neon border styling */
+body {
+    background-color: #121212; /* Pure black background */
+    color: #ffffff; /* White text */
+    font-family: 'Arial', sans-serif;
+}
+
+h2 {
+    color: #00ff99; /* Neon green text for heading */
+    text-align: center;
+    margin-bottom: 30px;
+}

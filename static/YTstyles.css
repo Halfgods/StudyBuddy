@@ -1,0 +1,301 @@
+/* ===== CSS VARIABLES ===== */
+:root {
+    --bg-dark: #0d0d21;
+    --card-bg: #1a1a2e;
+    --text-light: #ffffff;
+    --text-muted: #bdbdbd;
+    --neon-cyan: #00ffff;
+    --neon-magenta: #e100ff;
+    --gradient-main: linear-gradient(45deg, #7f00ff, #e100ff);
+    --gradient-hover: linear-gradient(45deg, #9400d3, #ff00ff);
+  }
+  
+  /* ===== Global Reset ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ===== Body ===== */
+  body {
+    font-family: 'Poppins', system-ui, sans-serif;
+    text-align: center;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* ===== Sticky Header ===== */
+  .search-header {
+    position: sticky;
+    top: 0;
+    background-color: #111;
+    z-index: 1000;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+    width: 100%;
+  }
+  
+  /* ===== Container ===== */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  /* ===== Input & Button ===== */
+  input {
+    padding: 12px;
+    font-size: 16px;
+    width: 70%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(40, 40, 70, 0.8);
+    color: var(--neon-cyan);
+    outline: none;
+  }
+  
+  input:focus {
+    outline: 2px solid var(--neon-cyan);
+  }
+  
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background: var(--gradient-main);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    background: var(--gradient-hover);
+    transform: scale(1.05);
+  }
+  
+  button:focus {
+    outline: 2px solid var(--neon-cyan);
+  }
+  
+  /* ===== Error Message ===== */
+  .error-message {
+    color: #ff4b4b;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-shadow: 0px 0px 10px red;
+  }
+  
+  /* ===== Video Container ===== */
+  .video-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px 0;
+  }
+  
+  /* Custom Scrollbar */
+  .video-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .video-container::-webkit-scrollbar-track {
+    background: #111;
+  }
+  
+  .video-container::-webkit-scrollbar-thumb {
+    background: var(--neon-cyan);
+    border-radius: 10px;
+  }
+  
+  /* ===== Slider & Cards ===== */
+  .video-slider {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+  }
+  
+  .video-card {
+    position: relative;
+    background: var(--card-bg);
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(127, 0, 255, 0.8);
+    width: 220px;
+    text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .video-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 25px rgba(0, 255, 255, 0.9);
+  }
+  
+  .video-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--neon-cyan);
+  }
+  
+  .video-card h4 {
+    font-size: 14px;
+    margin: 8px 0;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .channel-name {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  
+  .video-card a {
+    display: block;
+    padding: 5px;
+    background: linear-gradient(45deg, #9549b5, rgb(20 125 125 / 90%));
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+  
+  .video-card a:hover {
+    background: linear-gradient(45deg, #00bfff, #7fffd4);
+    color: white;
+  }
+  
+  /* ===== Saved Section ===== */
+  .saved-videos-container {
+    margin-top: 40px;
+    border-top: 2px solid var(--neon-cyan);
+    padding-top: 20px;
+  }
+  
+  .saved-videos-container h3 {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    margin-bottom: 10px;
+  }
+  
+  /* ===== Fallback Thumbnail ===== */
+  .thumbnail {
+    width: 200px;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .thumbnail[style*="url('')"] {
+    background-image: url('/static/defaultlogo.jpg');
+  }
+  
+  /* ===== Delete Button ===== */
+  .video-card .delete-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.8;
+    z-index: 2;
+    transition: opacity 0.2s ease;
+  }
+  
+  .video-card .delete-btn:hover {
+    opacity: 1;
+  }
+  
+  /* ===== Toast ===== */
+  #toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+  }
+  
+  .toast {
+    background-color: rgba(0, 0, 0, 1);
+    color: #fff;
+    padding: 15px 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    min-width: 200px;
+    box-shadow: 0 0 10px #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeInUp 0.5s ease;
+    transition: opacity 0.5s ease-in-out;
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .toast button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* ===== Toast Animation ===== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (max-width: 500px) {
+    .video-card {
+      width: 100%;
+    }
+  
+    input {
+      width: 90%;
+    }
+  }
+  
+  
+  /* ===== Divider ===== */
+  hr {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 6px 10px;
+  }
+  
