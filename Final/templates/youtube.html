@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Video Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='YTstyles.css') }}">
+  </head>
+  <body class="{% if not videos %}initial{% else %}scrolled{% endif %}">
+    
+    <!-- Centered / Sticky Search Header -->
+    <div id="search-header" class="search-header">
+      <form method="post">
+        <input
+          type="text"
+          name="query"
+          id="search-input"
+          placeholder="Enter search"
+          required
+        />
+        <button type="submit">Search</button>
+        <button type="button" id="reset-btn">Reset Search</button>
+      </form>
+    </div>
+
+    {% if error_message %}
+    <p class="error-message">{{ error_message }}</p>
+    {% endif %}
+
+    <!-- Main Layout after search -->
+    {% if videos %}
+    <div class="video-layout">
+      
+      <!-- Left Side: Iframe with fixed size -->
+      <div id="video-player">
+        <iframe width="705.77" height="396.98" 
+                src="{{ videos[0].url | replace('watch?v=', 'embed/') }}" 
+                frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <!-- Right Side: Suggested Videos -->
+      <div id="suggestions">
+        {% for video in videos[1:] %}
+        <div class="video-card">
+          <a href="{{ video.url }}" target="_blank">
+            <img src="{{ video.thumbnail }}" alt="Thumbnail"
+              onerror="this.onerror=null; this.src='/static/defaultlogo.jpg';" />
+            <h4>{{ video.title }}</h4>
+          </a>
+          <p class="channel-name">{{ video.channel }}</p>
+          <button class="save-btn"
+                  data-title="{{ video.title }}"
+                  data-url="{{ video.url }}"
+                  data-thumbnail="{{ video.thumbnail }}"
+                  data-channel="{{ video.channel }}">⭐ Save</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Saved Videos -->
+    <div class="saved-videos">
+      <h3>⭐ Saved Videos</h3>
+      <div class="video-slider" id="saved-container"></div>
+    </div>
+
+    <script src="/static/YTscript.js"></script>
+    <div id="toast-container"></div>
+  </body>
+</html>
