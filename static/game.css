@@ -72,3 +72,20 @@ h2 {
     text-align: center;
     margin-bottom: 30px;
 }
+@media (max-width: 768px) {
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .loading-screen {
+        font-size: 14px;
+    }
+}

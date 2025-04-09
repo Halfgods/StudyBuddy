@@ -5,10 +5,16 @@
     <title>Home</title>
   </head>
   <body>
+    <!-- Link to YouTube Feature page -->
     <a href="{{ url_for('youtube_page') }}">
       <button type="button">Go to YouTube Feature</button>
     </a>
+
     <div class="button-container">
-      <a href="{{ url_for('gaming') }}" class="btn">Go to Game Mode</a>
-  </div>  </body>
+      <!-- Link to Game Mode page -->
+      <a href="{{ url_for('game_mode') }}" class="btn">
+        Go to Game Mode
+      </a>
+    </div>
+  </body>
 </html>

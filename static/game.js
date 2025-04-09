@@ -1,20 +1,6 @@
-const cooldownTime = 90 * 60; // 1.5 hours cooldown in seconds (for testing: adjust to 90 minutes)
-let lastExitTime = localStorage.getItem("lastExitTime") ? parseInt(localStorage.getItem("lastExitTime")) : 0;
-let remainingTime = localStorage.getItem("remainingTime") ? parseInt(localStorage.getItem("remainingTime")) : 15 * 60; // Default 15 minutes play time
-
-// Prevent multiple game start intervals stacking
-let gameInterval, checkTabClosedInterval;
-
-// Simulating game loading with a timeout (replace this with your actual game load logic)
-window.onload = function () {
-    // Hide the loading screen
-    document.getElementById("loading-screen").style.display = "none";
-    
-    // Show the game content
-    document.getElementById("game-content").style.display = "block";
-};
-
 document.getElementById("play-game-btn").addEventListener("click", function () {
+    console.log("Play game button clicked!");  // Debugging step to check if click is detected
+    
     let currentTime = Math.floor(Date.now() / 1000);
     let timeSinceLastExit = currentTime - lastExitTime;
 
@@ -27,11 +13,14 @@ document.getElementById("play-game-btn").addEventListener("click", function () {
     }
 
     // Open the game in a new tab
-    let gameTab = window.open("https://www.crazygames.com/", "_blank");
-    if (!gameTab) return;
+    gameTab = window.open("https://www.crazygames.com/", "_blank");
+    if (!gameTab) {
+        console.error("Failed to open game tab."); // Debugging step
+        return;
+    }
 
     // Set the countdown time for the game session
-    let timeLeft = remainingTime > 0 ? remainingTime : 60; // Start with remaining time or 1 minute for testing
+    let timeLeft = remainingTime > 0 ? remainingTime : 2 * 60; // Start with remaining time or 2 minutes for testing
 
     localStorage.setItem("remainingTime", 0); // Reset the remaining time when the game starts
 
@@ -61,25 +50,13 @@ document.getElementById("play-game-btn").addEventListener("click", function () {
             document.title = "📚 StudyBuddy"; // Reset the title when the user is back
         }
     }, 1000);
+
+    // Start the study countdown after 2 minutes of game time
+    setTimeout(function () {
+        if (gameTab && !gameTab.closed) {
+            gameTab.close(); // Close the game tab after 2 minutes
+        }
+        document.title = "📚 StudyBuddy"; // Reset the title after the game tab closes
+        startStudyCountdown(); // Start the study break countdown
+    }, 2 * 60 * 1000); // Set this to 2 minutes (in milliseconds)
 });
-
-// Timer for study break countdown
-let timeLeftForStudy = 1 * 60; // 1-minute break for testing (replace with 30 minutes for actual use)
-let originalTitle = document.title; // Store the original tab title
-
-function updateTitle() {
-    let minutes = Math.floor(timeLeftForStudy / 60);
-    let seconds = timeLeftForStudy % 60;
-    document.title = `⏳ ${minutes}:${seconds < 10 ? '0' : ''}${seconds} | StudyBuddy`; // Update title with countdown
-
-    if (timeLeftForStudy <= 0) {
-        document.title = "🎯 Time's Up! | StudyBuddy"; // Change title when time's up
-        clearInterval(studyCountdown); // Stop the countdown
-        alert("Time's up! Close the game and get back to studying.");
-    }
-
-    timeLeftForStudy--;
-}
-
-// Start the study countdown when needed
-let studyCountdown = setInterval(updateTitle, 1000);
