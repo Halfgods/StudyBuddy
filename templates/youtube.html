@@ -34,10 +34,18 @@
     <div class="video-layout">
       <!-- Left Side: Iframe with fixed size -->
       <div id="video-player">
-        <iframe id="main-player" width="705.77" height="396.98" 
-                src="https://www.youtube.com/embed/{{ videos[0].video_id }}"
-                frameborder="0" allowfullscreen></iframe>
-      
+        <iframe
+  id="main-player"
+  width="705.77"
+  height="396.98"
+  src="https://www.youtube.com/embed/{{ videos[0].video_id }}?autoplay=1&origin={{ request.host_url | trim('/') }}&enablejsapi=1"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  allowfullscreen
+  onerror="this.parentElement.innerHTML = '<p> =C Video cannot be embedded. <a href=\'https://youtube.com/watch?v={{ videos[0].video_id }}\' target=\'_blank\'>Watch on YouTube</a></p>'">
+</iframe>
+
+
         <div class="main-video-info">
           <h3 id="main-title">{{ videos[0].title }}</h3>
           <p class="channel-name" id="main-channel">{{ videos[0].channel }}</p>

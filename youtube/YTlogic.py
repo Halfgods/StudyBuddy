@@ -1,6 +1,5 @@
 from googleapiclient.discovery import build
 
-
 # Your YouTube API Key
 API_KEY = "AIzaSyDHMsuCdvsFNoe54tyETK8NGle712sh3lk"
 
@@ -24,7 +23,7 @@ def search_youtube(query, max_results=5):
         videos = []
 
         for item in response.get("items", []):
-            kind = item["id"]["kind"]
+            # Determine if the item is a video or a playlist
             video_id = item["id"].get("videoId")
             playlist_id = item["id"].get("playlistId")
             title = item["snippet"]["title"]
@@ -32,6 +31,7 @@ def search_youtube(query, max_results=5):
             thumbnail = item["snippet"]["thumbnails"]["high"]["url"]
 
             if video_id:
+                # Correct URL assignment (no trailing comma)
                 url = f"https://www.youtube.com/watch?v={video_id}"
                 video_type = "video"
                 thumbnail_url = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
@@ -49,7 +49,7 @@ def search_youtube(query, max_results=5):
                 "video_id": video_id if video_id else playlist_id,
                 "type": video_type,
                 "thumbnail": thumbnail_url
-            })  
+            })
 
             if len(videos) >= max_results:
                 break
@@ -66,7 +66,3 @@ def reset_search():
         "video": None,
         "suggestions": [],
     }
-
- 
-
-
