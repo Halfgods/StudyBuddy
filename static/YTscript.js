@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize Save & Render
   attachSaveButtons();
   renderSavedVideos();
+  attachSuggestionClicks()
 });
 
 // Attach save button click events
@@ -128,4 +129,115 @@ function showToast(message) {
       }
   });
 }
+
+function attachSuggestionClicks() {
+  const suggestionCards = document.querySelectorAll("#suggestions .video-card");
+
+  suggestionCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const title = card.querySelector("h4")?.textContent;
+      const videoId = card.dataset.videoid;
+
+      // Update main video iframe
+      const videoPlayer = document.getElementById("video-player");
+      if (videoPlayer && videoId) {
+        videoPlayer.innerHTML = `
+          <iframe width="100%" height="450" 
+            src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+          </iframe>`;
+          // After setting the iframe in attachSuggestionClicks
+videoPlayer.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      }
+
+      // Fetch new suggestions dynamically
+      fetch("/suggest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const suggestions = document.getElementById("suggestions");
+          if (suggestions) suggestions.innerHTML = "";
+
+          if (Array.isArray(data)) {
+            data.forEach((video) => {
+              const card = document.createElement("div");
+              card.className = "video-card";
+              card.dataset.videoid = video.video_id;
+
+              card.innerHTML = `
+                <img src="${video.thumbnail}" alt="Thumbnail" />
+                <h4>${video.title}</h4>
+                <p class="channel-name">${video.channel}</p>`;
+
+              suggestions?.appendChild(card);
+            });
+
+            // Reattach listeners after DOM update
+            attachSuggestionClicks();
+          } else {
+            showToast("❌ Couldn't fetch suggestions.");
+          }
+        })
+        .catch((err) => console.error("❌ Suggestion error:", err));
+    });
+  });
+}document.addEventListener("DOMContentLoaded", () => {
+  const player = document.getElementById("main-player");
+  const cards = document.querySelectorAll(".video-card");
+
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      const videoId = card.dataset.videoid;
+      if (videoId && player) {
+        // Update iframe source
+        player.src = `https://www.youtube.com/embed/${videoId}`;
+
+        // Highlight selected card
+        cards.forEach(c => c.classList.remove("playing"));
+        card.classList.add("playing");
+
+        // Optionally scroll up to the player
+        window.scrollTo({ top: player.offsetTop - 20, behavior: "smooth" });
+      }
+    });
+  });
+});
+
+const mainTitle = document.getElementById("main-title");
+const mainChannel = document.getElementById("main-channel");
+const mainSaveBtn = document.getElementById("main-save-btn");
+
+cards.forEach(card => {
+  card.addEventListener("click", () => {
+    const videoId = card.dataset.videoid;
+    const title = card.dataset.title;
+    const url = card.dataset.url;
+    const thumbnail = card.dataset.thumbnail;
+    const channel = card.dataset.channel;
+
+    if (videoId && player) {
+      // Update iframe
+      player.src = `https://www.youtube.com/embed/${videoId}`;
+
+      // Update title & channel
+      mainTitle.textContent = title;
+      mainChannel.textContent = channel;
+
+      // Update save button data
+      mainSaveBtn.setAttribute("data-title", title);
+      mainSaveBtn.setAttribute("data-url", url);
+      mainSaveBtn.setAttribute("data-thumbnail", thumbnail);
+      mainSaveBtn.setAttribute("data-channel", channel);
+
+      // Reset highlights
+      cards.forEach(c => c.classList.remove("playing"));
+      card.classList.add("playing");
+    }
+  });
+});
+
 

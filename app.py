@@ -40,6 +40,23 @@ def api_search():
     videos = search_youtube(query)
     return jsonify(videos)
 
+@app.route("/suggest", methods=["POST"])
+def suggest():
+    data = request.get_json()
+    selected_title = data.get("title")
+
+    if not selected_title:
+        return jsonify({"error": "No title provided"}), 400
+
+    print(f"📩 Suggestion request for: {selected_title}")
+    suggestions = search_youtube(selected_title)
+
+    if suggestions:
+        return jsonify(suggestions)
+    else:
+        return jsonify({"error": "No suggestions found"}), 404
+
+
 @app.route("/reset", methods=["POST"])
 def reset():
     print("🔁 Reset called from frontend")

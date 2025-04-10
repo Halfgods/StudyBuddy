@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YouTube Video Search</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='YTstyles.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='YTstyles.css') }}"
+    />
   </head>
   <body class="{% if not videos %}initial{% else %}scrolled{% endif %}">
-    
     <!-- Centered / Sticky Search Header -->
     <div id="search-header" class="search-header">
       <form method="post">
@@ -30,30 +32,46 @@
     <!-- Main Layout after search -->
     {% if videos %}
     <div class="video-layout">
-      
       <!-- Left Side: Iframe with fixed size -->
       <div id="video-player">
-        <iframe width="705.77" height="396.98" 
-                src="{{ videos[0].url | replace('watch?v=', 'embed/') }}" 
+        <iframe id="main-player" width="705.77" height="396.98" 
+                src="https://www.youtube.com/embed/{{ videos[0].video_id }}"
                 frameborder="0" allowfullscreen></iframe>
+      
+        <div class="main-video-info">
+          <h3 id="main-title">{{ videos[0].title }}</h3>
+          <p class="channel-name" id="main-channel">{{ videos[0].channel }}</p>
+          <button class="save-btn"
+                  id="main-save-btn"
+                  data-title="{{ videos[0].title }}"
+                  data-url="{{ videos[0].url }}"
+                  data-thumbnail="{{ videos[0].thumbnail }}"
+                  data-channel="{{ videos[0].channel }}">⭐ Save</button>
+        </div>
       </div>
+      
 
       <!-- Right Side: Suggested Videos -->
       <div id="suggestions">
         {% for video in videos[1:] %}
-        <div class="video-card">
-          <a href="{{ video.url }}" target="_blank">
-            <img src="{{ video.thumbnail }}" alt="Thumbnail"
-              onerror="this.onerror=null; this.src='/static/defaultlogo.jpg';" />
-            <h4>{{ video.title }}</h4>
-          </a>
+        <div
+          class="video-card"
+          data-videoid="{{ video.video_id }}"
+          data-title="{{ video.title }}"
+          data-url="{{ video.url }}"
+          data-thumbnail="{{ video.thumbnail }}"
+          data-channel="{{ video.channel }}"
+        >
+          <img
+            src="{{ video.thumbnail }}"
+            alt="Thumbnail"
+            onerror="this.onerror=null; this.src='/static/defaultlogo.jpg';"
+          />
+          <h4>{{ video.title }}</h4>
           <p class="channel-name">{{ video.channel }}</p>
-          <button class="save-btn"
-                  data-title="{{ video.title }}"
-                  data-url="{{ video.url }}"
-                  data-thumbnail="{{ video.thumbnail }}"
-                  data-channel="{{ video.channel }}">⭐ Save</button>
+          <button class="save-btn" ...>⭐ Save</button>
         </div>
+
         {% endfor %}
       </div>
     </div>
